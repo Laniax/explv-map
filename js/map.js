@@ -17,6 +17,7 @@ $(document).ready(function () {
     var map = L.map('map', {
         //maxBounds: L.latLngBounds(L.latLng(-40, -180), L.latLng(85, 153))
         zoomControl: false,
+		attributionControl: false,
         renderer: L.canvas()
     });
 
@@ -29,7 +30,7 @@ $(document).ready(function () {
         map.tile_layer = L.tileLayer('https://raw.githubusercontent.com/Explv/osrs_map_full_2020_07_17/master/' + map.plane + '/{z}/{x}/{y}.png', {
             minZoom: 4,
             maxZoom: 11,
-            attribution: 'Map data',
+			
             noWrap: true,
             tms: true
         });
