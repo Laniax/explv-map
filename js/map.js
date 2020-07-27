@@ -41,23 +41,6 @@ $(document).ready(function () {
     map.updateMapPath();
     map.getContainer().focus();
 
-    var prevMouseRect, prevMousePos;
-    map.on('mousemove', function (e) {
-        var mousePos = Position.fromLatLng(map, e.latlng, map.plane);
-
-        if (prevMousePos !== mousePos) {
-
-            prevMousePos = mousePos;
-
-            if (prevMouseRect !== undefined) {
-                map.removeLayer(prevMouseRect);
-            }
-
-            prevMouseRect = mousePos.toLeaflet(map);
-            prevMouseRect.addTo(map);
-        }
-    });
-
     const setUrlParams = () => {
         const mapCentre = map.getBounds().getCenter()
         const centrePos = Position.fromLatLng(map, mapCentre, map.plane);
