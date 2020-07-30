@@ -17,11 +17,15 @@ $(document).ready(function () {
     var map = L.map('map', {
         //maxBounds: L.latLngBounds(L.latLng(-40, -180), L.latLng(85, 153))
         zoomControl: false,
-		attributionControl: false,
+        attributionControl: false,
         renderer: L.canvas()
     });
 
     map.plane = 0;
+
+    if (urlCentreZ) {
+        map.plane = Number(urlCentreZ);
+    }
 
     map.updateMapPath = function () {
         if (map.tile_layer !== undefined) {
@@ -41,18 +45,6 @@ $(document).ready(function () {
     map.updateMapPath();
     map.getContainer().focus();
 
-    const setUrlParams = () => {
-        const mapCentre = map.getBounds().getCenter()
-        const centrePos = Position.fromLatLng(map, mapCentre, map.plane);
-
-        const zoom = map.getZoom();
-
-        window.history.replaceState(null, null, `?centreX=${centrePos.x}&centreY=${centrePos.y}&centreZ=${centrePos.z}&zoom=${zoom}`);
-    };
-
-    map.on('move', setUrlParams);
-    map.on('zoom', setUrlParams);
-
     let zoom = 7;
     let centreLatLng = [-79, -137]
 
@@ -63,9 +55,10 @@ $(document).ready(function () {
     if (urlCentreX && urlCentreY && urlCentreZ) {
         const centrePos = new Position(Number(urlCentreX), Number(urlCentreY), Number(urlCentreZ));
         centreLatLng = centrePos.toLatLng(map);
-		
+
 		var rect = centrePos.toLeaflet(map);
 		rect.addTo(map);
+		
     } else if (urlRegionID) {
         const region = new Region(Number(urlRegionID));
         const centrePos = region.toCentrePosition()
@@ -73,5 +66,5 @@ $(document).ready(function () {
         zoom = urlZoom || 9;
     }
 
-    map.setView(centreLatLng, zoom)
+    map.setView(centreLatLng, zoom);
 });
